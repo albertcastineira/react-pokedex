@@ -1,55 +1,37 @@
 'use client'
-import React from 'react'
-import PokemonCard from '@/components/PokemonList/PokemonCard'
-// TO DO -> UseState for managin pokemos from Api -> For Tomorrow
-
-
+import React, { useEffect, useState } from 'react';
+import PokemonCard from '@/components/PokemonList/PokemonCard';
 
 export default function PokemonList() {
+  const [pokemons, setPokemons] = useState([]);
 
-    let apiURL = 'https://pokeapi.co/api/v2/pokemon?limit='
-    let maxPokemon = 99;
-    interface Pokemon {
-        name: string
-        
+  useEffect(() => {
+    const getPokemons = async () =>{
+      // Recuperamos el listado de pokemones
+      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=20&offset=0')
+      const listaPokemons = await response.json()
+      const { results } = listaPokemons
+
+      setPokemons(results);
+
+      // Mapeamos la primer respuesta, nombre y url
+      const pokemons = results.map( async (pokemon : any) => {
+        const response = await fetch(pokemon.url);
+        const poke = await response.json()
+
+        console.log(poke)
+      })
     }
 
-    interface ApiResponse { 
-        count : number,
-        next : number,
-        previous : number,
-        results : Array<Pokemon>,
-    }
+    getPokemons()
+  }, [])
 
-    let pokemons : any
-
-    React.useEffect(() => {
-        pokemons =  getPokemons()
-      });
-
-
-      const getPokemons = async (): Promise<ApiResponse> => {
-        try {
-          const response = await fetch(`${apiURL}${maxPokemon}`);
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-      
-          const data = await response.json() as ApiResponse;
-          return data;
-        } catch (error) {
-          // Handle any errors here
-          console.error(error);
-          throw error; // Rethrow the error so it can be handled by the caller
-        }
-    }
-
-
-    return (
-        <>
-            {pokemons}
-            <h2>PokemonList</h2>
-            <PokemonCard/>
-        </>
-        )
+  return (
+    <div className='text-center text-white m-4'>
+      {pokemons.map(pokemon => (
+    <p m-4>{pokemon.name}</p>
+))}
+    </div>
+  );
 }
+
