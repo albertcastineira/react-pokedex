@@ -1,9 +1,11 @@
-import Image from 'next/image'
+import HomeView from '@/components/HomePage/HomeView'
+import PokemonList from '@/components/PokemonList/PokemonList'
 
 export default function Home() {
   return (
     <>
-      <h1>Pokedex with NextJS,ReactJS,Tailwind</h1>
+      <HomeView/>
+      <PokemonList/>
     </>
   )
 }
