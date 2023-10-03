@@ -16,7 +16,7 @@ export default function PokemonList() {
   useEffect(() => {
     const getPokemons = async () => {
       // Recuperamos el listado de pokemones
-      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=20&offset=0')
+      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=905')
       const pokemonList = await response.json()
       const { results } = pokemonList    
 
