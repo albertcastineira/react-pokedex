@@ -3,9 +3,8 @@ import PokemonList from '@/components/PokemonList/PokemonList'
 
 export default function Home() {
   return (
-    <div className='bg-neutral-900'>
+    <div className=''>
       <HomeView/>
-      <PokemonList/>
     </div>
       
     

@@ -1,11 +1,12 @@
 import React from 'react'
-import PokemonList from '@/components/PokemonList/PokemonList'
 
-export default function PokemonCard() {
+
+export default function PokemonCard({pokemonName, imageUrl, pokemonId} : any) {
   return (
-    <div>
-      <PokemonList/>
-      <h1>pokemon.name</h1>
+    <div className="pokemonCard bg-white rounded-sm p-1 text-center">
+        <img className="w-[150px] m-[auto] drop-shadow-2xl" src={imageUrl} alt="" />
+        <span className="float-right pr-2 font-semibold text-gray-300 my-2">#{pokemonId}</span>
+        <p className="font-bold text-black capitalize text-center my-2">{pokemonName}</p>
     </div>
   )
 }
