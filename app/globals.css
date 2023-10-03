@@ -8,12 +8,12 @@ body{
     background-color: #CD3015;
 }
 
-.pokemonImg {
+.pokemonCard {
     cursor: pointer;
 }
 
-.pokemonImg:hover {
-    animation: bounce 2s ease infinite;
+.pokemonCard:hover .pokemonImg {
+    animation: bounce 1.3s ease infinite;
     scale: 1.1;
 }
 

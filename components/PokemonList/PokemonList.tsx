@@ -9,28 +9,30 @@ type Pokemon = {
   img: string;
 };
 
-export default function PokemonList() {
+export default function PokemonList(): React.JSX.Element{
   // Initialize the state with an empty array of Pokemon objects
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [NameSearch, setNameSearch] = useState<string>("");
 
   useEffect(() => {
     const getPokemons = async () => {
       // Recuperamos el listado de pokemones
-      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=90&offset=0')
+      const limit : number = 100;
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=0`)
       const pokemonList = await response.json()
       const { results } = pokemonList;
 
       // Mapeamos la primer respuesta, nombre y url
       const newPokemons = results.map(async (pokemon: any) => {
         const response = await fetch(pokemon.url);
-        const poke = await response.json()
-
+        const poke = await response.json();
         return {
           id: poke.id,
           name: poke.name,
           img: poke.sprites.other.home.front_default,
+          types: poke.types
         }
-      })  
+      })
 
       // Use Promise.all to wait for all promises to resolve
       setPokemons(await Promise.all(newPokemons));
@@ -43,7 +45,7 @@ export default function PokemonList() {
     <>
       <div className="filters grid gap-3 md:grid-cols-3 sm:grid-cols-1 m-4">
         <div className="searchBar md:col-span-2 sm:col-span-1">
-          <input className="rounded-md py-2 px-3 outline-none w-full" placeholder="Search for pokemons" type="search" />
+          <input className="rounded-md py-2 px-3 outline-none w-full" onChange={e => setNameSearch(e.target.value)} placeholder="Search for pokemons" type="search" />
         </div>
         <div className="filterByTypes">
           <select className="rounded-md py-2 px-3 outline-none w-full h-full" name="typeFilter" id="">
@@ -53,11 +55,12 @@ export default function PokemonList() {
       </div>
       <div className='text-center m-4 text-white gap-3 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2'>
         {
-          pokemons.map(pokemon => (
-            <PokemonCard 
+          pokemons.filter(pokemon => pokemon.name.toLowerCase().includes(NameSearch)).map(pokemon => (
+            <PokemonCard
+              key = {pokemon.id}
+              pokemonId = {pokemon.id}
               pokemonName = {pokemon.name}
               imageUrl = {pokemon.img}
-              pokemonId = {pokemon.id}
               />
         ))}
       </div>

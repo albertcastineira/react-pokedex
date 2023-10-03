@@ -13,6 +13,7 @@ export default function HomeView() {
         width={300}
         height={300}
         alt='Pokedex Logo'
+        priority={true}
         />
       </h1>
       <PokemonList/>
