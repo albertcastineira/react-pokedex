@@ -40,15 +40,27 @@ export default function PokemonList() {
   }, []);
 
   return (
-    <div className='text-center text-white gap-3 m-4 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2'>
-      {
-        pokemons.map(pokemon => (
-          <PokemonCard 
-            pokemonName = {pokemon.name}
-            imageUrl = {pokemon.img}
-            pokemonId = {pokemon.id}
-            />
-      ))}
-    </div>
+    <>
+      <div className="filters grid gap-3 grid-cols-3 m-4">
+        <div className="searchBar col-span-2">
+          <input className="rounded-md py-2 px-3 outline-none w-full" placeholder="Search for pokemons" type="search" />
+        </div>
+        <div className="filterByTypes">
+          <select className="rounded-md py-2 px-3 outline-none w-full h-full" name="typeFilter" id="">
+            <option value="All">All types</option>
+          </select>
+        </div>
+      </div>
+      <div className='text-center m-4 text-white gap-3 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2'>
+        {
+          pokemons.map(pokemon => (
+            <PokemonCard 
+              pokemonName = {pokemon.name}
+              imageUrl = {pokemon.img}
+              pokemonId = {pokemon.id}
+              />
+        ))}
+      </div>
+    </>
   );
 }
