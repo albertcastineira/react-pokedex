@@ -16,9 +16,9 @@ export default function PokemonList() {
   useEffect(() => {
     const getPokemons = async () => {
       // Recuperamos el listado de pokemones
-      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=20&offset=0')
+      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=90&offset=0')
       const pokemonList = await response.json()
-      const { results } = pokemonList    
+      const { results } = pokemonList;
 
       // Mapeamos la primer respuesta, nombre y url
       const newPokemons = results.map(async (pokemon: any) => {
@@ -41,8 +41,8 @@ export default function PokemonList() {
 
   return (
     <>
-      <div className="filters grid gap-3 grid-cols-3 m-4">
-        <div className="searchBar col-span-2">
+      <div className="filters grid gap-3 md:grid-cols-3 sm:grid-cols-1 m-4">
+        <div className="searchBar md:col-span-2 sm:col-span-1">
           <input className="rounded-md py-2 px-3 outline-none w-full" placeholder="Search for pokemons" type="search" />
         </div>
         <div className="filterByTypes">
