@@ -1,43 +1,90 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import PokemonCard from '@/components/PokemonList/PokemonCard';
+import DetailsPokemon from './DetailsPokemon'
 
 // Define the type for a Pokemon object
 type Pokemon = {
   id: number;
   name: string;
   img: string;
+  abilities: string[]; // Define the type for abilities
+  stats: { name: string; base: number }[]; // Define the type for stats
+  types: string[]; 
 };
+
+type ShowState = {
+  show: boolean;
+  pokemon: any; // Replace 'any' with the actual type of your Pokemon object
+  
+};
+
+
 
 export default function PokemonList() {
   // Initialize the state with an empty array of Pokemon objects
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
 
+
   useEffect(() => {
-    const getPokemons = async () => {
+    const getPokemons = async (): Promise<void> => {
       // Recuperamos el listado de pokemones
-      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=905')
-      const pokemonList = await response.json()
-      const { results } = pokemonList    
-
-      // Mapeamos la primer respuesta, nombre y url
-      const newPokemons = results.map(async (pokemon: any) => {
-        const response = await fetch(pokemon.url);
-        const poke = await response.json()
-
-        return {
-          id: poke.id,
-          name: poke.name,
-          img: poke.sprites.other.home.front_default,
-        }
-      })  
-
-      // Use Promise.all to wait for all promises to resolve
-      setPokemons(await Promise.all(newPokemons));
-    }
-
+      try {
+        const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=905');
+        const pokemonList = await response.json();
+        const { results } = pokemonList;
+  
+        // Mapeamos la primer respuesta, nombre y url
+        const newPokemons = await Promise.all(results.map(async (pokemon: any) => {
+          try {
+            const response = await fetch(pokemon.url);
+            if (!response.ok) {
+              throw new Error(`Error! status: ${response.status}`);
+            }
+            const poke = await response.json();
+  
+            
+            if (poke !== null) {
+              const abilities = poke.abilities.map((a: any) => a.ability.name);
+              const stats = poke.stats.map((s: any) => ({
+                name: s.stat.name,
+                base: s.base_stat,
+              }));
+              const types = poke.types.map((t: any) => t.type.name);
+  
+              return {
+                id: poke.id,
+                name: poke.name,
+                img: poke.sprites.other.home.front_default,
+                abilities,
+                stats,
+                types,
+              };
+            } else {
+              return null;
+            }
+          } catch (err) {
+            console.error('Error fetching Pokemon details:', err);
+            return null; 
+          }
+        }));
+        const filteredPokemons = newPokemons.filter(pokemon => pokemon !== null);
+        setPokemons(filteredPokemons);
+      } catch (err) {
+        console.error('Error fetching Pokemon list:', err);
+      }
+    };
+  
     getPokemons();
   }, []);
+
+
+  const [show, setShow] = useState<ShowState>({ show: false, pokemon: {} });
+
+  const showPokemon = (pokemon: any) => setShow({ show: true, pokemon });
+
+  const noShowPokemon = () => setShow({ show: false, pokemon: {} });
+
 
   return (
     <>
@@ -51,14 +98,17 @@ export default function PokemonList() {
           </select>
         </div>
       </div>
+       <DetailsPokemon {...show} close = {noShowPokemon} />
       <div className='text-center m-4 text-white gap-3 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2'>
+        
         {
           pokemons.map(pokemon => (
-            <PokemonCard 
-              pokemonName = {pokemon.name}
-              imageUrl = {pokemon.img}
-              pokemonId = {pokemon.id}
-              />
+            <PokemonCard
+            pokemonName={pokemon.name}
+            imageUrl={pokemon.img}
+            pokemonId={pokemon.id}
+            showPokemon={() => showPokemon(pokemon)} // Pass the showPokemon function with the current Pokemon
+          />
         ))}
       </div>
     </>
