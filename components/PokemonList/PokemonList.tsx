@@ -13,7 +13,6 @@ type Pokemon = {
   types: string[]; 
 };
 
-<<<<<<< HEAD
 type ShowState = {
   show: boolean;
   pokemon: any; // Replace 'any' with the actual type of your Pokemon object
@@ -23,9 +22,6 @@ type ShowState = {
 
 
 export default function PokemonList() {
-=======
-export default function PokemonList(): React.JSX.Element{
->>>>>>> refs/remotes/origin/main
   // Initialize the state with an empty array of Pokemon objects
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [nameSearch, setNameSearch] = useState<string>("");
@@ -35,7 +31,6 @@ export default function PokemonList(): React.JSX.Element{
   useEffect(() => {
     const getPokemons = async (): Promise<void> => {
       // Recuperamos el listado de pokemones
-<<<<<<< HEAD
       try {
         const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=905');
         const pokemonList = await response.json();
@@ -82,28 +77,6 @@ export default function PokemonList(): React.JSX.Element{
       }
     };
   
-=======
-      const limit : number = 100000;
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=0`)
-      const pokemonList = await response.json()
-      const { results } = pokemonList;
-  
-      // Mapeamos la primer respuesta, nombre y url
-      const newPokemons = results.map(async (pokemon: any) => {
-          const response = await fetch(pokemon.url);
-          const poke = await response.json();
-          return {
-            id: poke.id,
-            name: poke.name,
-            img: poke.sprites.other.home.front_default,
-            types: poke.types
-          };
-      })
-      setPokemons(await Promise.all(newPokemons));
-      setLoading(false);
-    }
-    
->>>>>>> refs/remotes/origin/main
     getPokemons();
   }, [isLoading]);
 
@@ -131,7 +104,6 @@ export default function PokemonList(): React.JSX.Element{
       <div className='text-center m-4 text-white gap-3 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2'>
         
         {
-<<<<<<< HEAD
           pokemons.map(pokemon => (
             <PokemonCard
             pokemonName={pokemon.name}
@@ -139,15 +111,6 @@ export default function PokemonList(): React.JSX.Element{
             pokemonId={pokemon.id}
             showPokemon={() => showPokemon(pokemon)} // Pass the showPokemon function with the current Pokemon
           />
-=======
-          pokemons.filter(pokemon => pokemon.name.toLowerCase().includes(nameSearch.toLowerCase())).map(pokemon => (
-            <PokemonCard
-              key = {pokemon.id}
-              pokemonId = {pokemon.id}
-              pokemonName = {pokemon.name}
-              imageUrl = {pokemon.img}
-              />
->>>>>>> refs/remotes/origin/main
         ))}
       </div>
     </>
