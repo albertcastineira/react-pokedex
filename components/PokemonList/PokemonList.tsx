@@ -12,34 +12,34 @@ type Pokemon = {
 export default function PokemonList(): React.JSX.Element{
   // Initialize the state with an empty array of Pokemon objects
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  const [NameSearch, setNameSearch] = useState<string>("");
+  const [nameSearch, setNameSearch] = useState<string>("");
+  const [isLoading,setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const getPokemons = async () => {
       // Recuperamos el listado de pokemones
-      const limit : number = 100;
+      const limit : number = 100000;
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=0`)
       const pokemonList = await response.json()
       const { results } = pokemonList;
-
+  
       // Mapeamos la primer respuesta, nombre y url
       const newPokemons = results.map(async (pokemon: any) => {
-        const response = await fetch(pokemon.url);
-        const poke = await response.json();
-        return {
-          id: poke.id,
-          name: poke.name,
-          img: poke.sprites.other.home.front_default,
-          types: poke.types
-        }
+          const response = await fetch(pokemon.url);
+          const poke = await response.json();
+          return {
+            id: poke.id,
+            name: poke.name,
+            img: poke.sprites.other.home.front_default,
+            types: poke.types
+          };
       })
-
-      // Use Promise.all to wait for all promises to resolve
       setPokemons(await Promise.all(newPokemons));
+      setLoading(false);
     }
-
+    
     getPokemons();
-  }, []);
+  }, [isLoading]);
 
   return (
     <>
@@ -55,7 +55,7 @@ export default function PokemonList(): React.JSX.Element{
       </div>
       <div className='text-center m-4 text-white gap-3 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2'>
         {
-          pokemons.filter(pokemon => pokemon.name.toLowerCase().includes(NameSearch)).map(pokemon => (
+          pokemons.filter(pokemon => pokemon.name.toLowerCase().includes(nameSearch.toLowerCase())).map(pokemon => (
             <PokemonCard
               key = {pokemon.id}
               pokemonId = {pokemon.id}
