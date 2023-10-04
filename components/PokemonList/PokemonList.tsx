@@ -104,7 +104,7 @@ export default function PokemonList() {
       <div className='text-center m-4 text-white gap-3 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2'>
         
         {
-          pokemons.map(pokemon => (
+          pokemons.filter(pokemon => pokemon.name.toLowerCase().includes(nameSearch.toLowerCase())).map(pokemon => (
             <PokemonCard
             pokemonName={pokemon.name}
             imageUrl={pokemon.img}
