@@ -5,7 +5,9 @@
 body {
   max-width: 1000px;
   margin: 0 auto;
-  background-color: #cd3015;
+  background: rgb(200,50,23);
+  background: linear-gradient(137deg, rgba(200,50,23,1) 0%, rgba(0,0,0,1) 100%);
+  min-height: 100vh;
 }
 
 .pokemonCard {
@@ -127,6 +129,8 @@ body {
     -moz-box-shadow: 0px 0px 24px -3px rgba(0, 0, 0, 0.50);
     box-shadow: 0px 0px 24px -3px rgba(0, 0, 0, 0.50);
     opacity: 1;
+    outline: none;
+    text-shadow: 0px 0px 2px #000000;
   }
 
   .normal {
@@ -201,3 +205,4 @@ body {
     background-color: #f0b6bc;
   }
 }
+

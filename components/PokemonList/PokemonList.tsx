@@ -113,8 +113,8 @@ export default function PokemonList() {
     <>
       <div className="filters grid gap-3 md:grid-cols-3 sm:grid-cols-1 m-4">
         <div className="searchBar md:col-span-1 sm:col-span-3">
-          <div className="search mt-3.5">
-          <label htmlFor="" className="font-semibold">Filters</label>
+          <div className="search">
+          <label htmlFor="" className="font-semibold text-white">Name Filter</label>
           <input
             className="rounded-md py-2 px-3 outline-none w-full mt-2"
             onChange={(e) => setNameSearch(e.target.value)}
@@ -124,6 +124,9 @@ export default function PokemonList() {
           </div>
         </div>
         <div className="filterByTypes md:col-span-2 sm:col-span-3 grid grid-cols-6 gap-2">
+          <div className="col-span-6">
+            <label htmlFor="" className="font-semibold text-white">Type Filter</label>
+          </div>
           <button onClick={(e) => addTypeFilter(e)} className="normal">Normal</button>
           <button onClick={(e) => addTypeFilter(e)} className="fire">Fire</button>
           <button onClick={(e) => addTypeFilter(e)} className="water">Water</button>
@@ -134,7 +137,7 @@ export default function PokemonList() {
           <button onClick={(e) => addTypeFilter(e)} className="poison">Poison</button>
           <button onClick={(e) => addTypeFilter(e)} className="ground">Ground</button>
           <button onClick={(e) => addTypeFilter(e)} className="flying">Flying</button>
-          <button onClick={(e) => addTypeFilter(e)} className="psichic">Psychic</button>
+          <button onClick={(e) => addTypeFilter(e)} className="psychic">Psychic</button>
           <button onClick={(e) => addTypeFilter(e)} className="bug">Bug</button>
           <button onClick={(e) => addTypeFilter(e)} className="rock">Rock</button>
           <button onClick={(e) => addTypeFilter(e)} className="ghost">Ghost</button>
