@@ -343,6 +343,7 @@ export default function PokemonList() {
               pokemonName={pokemon.name}
               imageUrl={pokemon.img}
               pokemonId={pokemon.id}
+              pokemonTypes={pokemon.types}
               showPokemon={() => showPokemon(pokemon)} // Pass the showPokemon function with the current Pokemon
             />
           ))}
