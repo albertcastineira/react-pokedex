@@ -1,8 +1,11 @@
 import React from 'react';
 import Image from "next/image"
+import Link from 'next/link';
 
 export default function PokemonCard({ pokemonName, imageUrl, pokemonId, showPokemon, pokemonTypes }: any) {
   return (
+    <>
+    <Link href={`/pokemon/${pokemonId}`} prefetch={false}>
     <div className="pokemonCard shadow-md bg-gradient-to-br from-white to-gray-100 rounded-md p-1 text-center">
       <div className="grid grid-cols-2">
         <div className="text-start">
@@ -19,16 +22,18 @@ export default function PokemonCard({ pokemonName, imageUrl, pokemonId, showPoke
         </div>
       </div>
       <Image
+       key={pokemonId}
         className="pokemonImg m-[auto] drop-shadow-2xl"
         src={imageUrl}
         width={150}
         height={150}
         alt=""
-        onClick={() => showPokemon()} // Call showPokemon when the image is clicked
       />
       <p className="font-bold text-gray-600 drop-shadow-lg capitalize text-center my-2">
         {pokemonName}
       </p>
     </div>
+    </Link>
+    </>
   );
 }
